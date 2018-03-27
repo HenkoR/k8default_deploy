@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: captureorderack-deployment
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: captureorderack
+  template:
+    metadata:
+      labels:
+        app: captureorderack
+    spec:
+      containers:
+      - name: captureorderack
+        image: "sabbour/captureorderack-netcore:latest"
+        ports:
+        - containerPort: 80
+        env:
+        - name: APPINSIGHTS_KEY
+          value: b887076d-ba65-42bf-8b12-010d6eb3e840
+        - name: TEAMNAME
+          value: ContainersOnFire
+        - name: MONGOURL
+          value: mongodb://defaultmongo-mongodb:27017
+        - name: AMQPURL
+          value: amqps://RootManageSharedAccessKey:rR39BtzhURdgcRR%2BIHq1BFLmze21ADuhKnX87MOmMXY%3D@k8default.servicebus.windows.net/k8default

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: captureorderack-service
+  labels:
+   app: captureorderack
+spec:
+  selector:
+    app: captureorderack
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer

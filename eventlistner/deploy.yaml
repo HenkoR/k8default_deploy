@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: eventlistener
+spec:
+ replicas: 3
+ template:
+   metadata:
+     labels:
+       app: eventlistener
+   spec:
+     containers:
+     - name: eventlistener
+       image: sabbour/eventhublistenerack
+       imagePullPolicy: IfNotPresent
+       env:
+       - name: TEAMNAME
+         value: ContainersOnFire
+       - name: APPINSIGHTS_KEY
+         value: b887076d-ba65-42bf-8b12-010d6eb3e840
+       - name: PROCESSENDPOINT
+         value: "http://fulfillorderack-service:8080/v1/order"
+       - name: EVENTHUBCONNSTRING
+         value: Endpoint=sb://k8default.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=rR39BtzhURdgcRR+IHq1BFLmze21ADuhKnX87MOmMXY=    
+       - name: EVENTHUBPATH
+         value: k8default

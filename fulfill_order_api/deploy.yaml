@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fulfillorderack-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fulfillorderack
+  template:
+    metadata:
+      labels:
+        app: fulfillorderack
+    spec:
+      containers:
+      - name: k8default
+        image: "k8default.azurecr.io/fulfillorderack:fulfillv1"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: "/orders"
+          name: orders
+        env:
+        - name: APPINSIGHTS_KEY
+          value: b887076d-ba65-42bf-8b12-010d6eb3e840
+        - name: TEAMNAME
+          value: ContainersOnFire
+        - name: MONGOURL
+          value: mongodb://defaultmongo-mongodb:27017
+        - name: AMQPURL
+          value: amqp://admin:defaultpassword@defaultrabbit-rabbitmq-ha:5672
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: orders
+        persistentVolumeClaim:
+          claimName: orders
